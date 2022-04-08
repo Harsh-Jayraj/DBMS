@@ -1,0 +1,68 @@
+\documentclass[12pt,letterpaper, onecolumn]{exam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[lmargin=71pt, tmargin=1.2in]{geometry}  %For centering solution box
+\usepackage{graphicx}
+\lhead{Term Paper\\}
+\rhead{Image Recognition\\}
+% \chead{\hline} % Un-comment to draw line below header
+\thispagestyle{empty}   %For removing header/footer from page 1
+\begin{document}
+
+\begingroup  
+    \centering
+    \LARGE TERM PAPER\\
+    \LARGE DATABASE MANAGEMENT SYSTEMS\\[0.5em]
+    \large \today\\[0.5em]
+    \large INTERACTIVE DATA EXPLORATION AND VISUALISATION\par
+    \large Roll Number - 19111026\par
+    \large BME/ 6th sem / B.Tech\par
+\endgroup
+\rule{\textwidth}{0.4pt}
+\pointsdroppedatright   %Self-explanatory
+\printanswers
+\renewcommand{\solutiontitle}{\noindent\textbf{Ans:}\enspace}   %Replace "Ans:" with starting keyword in solution box
+
+
+    \section{Introduction}
+    A database management system (or DBMS) is essentially nothing more than a computerized data-keeping system. Users of the system are given facilities to perform several kinds of operations on such a system for either manipulation of the data in the database or the management of the database structure itself. Database Management Systems (DBMSs) are categorized according to their data structures or types.
+    \\\\
+    Mainframe sites tend to use a hierarchical model when the data structure (not data values) of the data needed for an application is relatively static. For example, a Bill of Material (BOM) database structure always has a high level assembly part number, and several levels of components with subcomponents. The structure usually has a component forecast, cost, and pricing data, and so on. The structure of the data for a BOM application rarely changes, and new data elements (not values) are rarely identified. An application normally starts at the top with the assembly part number, and goes down to the detail components.
+    \\\\
+    Hierarchical and relational database systems have common benefits. RDBMS has the additional, significant advantage over the hierarchical DB of being non-navigational. By navigational, we mean that in a hierarchical database, the application programmer must know the structure of the database. The program must contain specific logic to navigate from the root segment to the desired child segments containing the desired attributes or elements. The program must still access the intervening segments, even though they are not needed.
+    
+    \section{What is Interactive Data Visualisation ?}
+    Interactive data visualization refers to the use of modern data analysis software that enables users to directly manipulate and explore graphical representations of data. Data visualization uses visual aids to help analysts efficiently and effectively understand the significance of data. Interactive data visualization software improves upon this concept by incorporating interaction tools that facilitate the modification of the parameters of a data visualization, enabling the user to see more detail, create new insights, generate compelling questions, and capture the full value of the data.
+    
+    \section{2 Challenges and Opportunities}
+    Designing a system for interactive data exploration with a human-in-the-loop front-end requires solving a set of very unique research challenges while also opening the door to several interesting opportunities. In this section, we first outline some of the requirements and challenges, followed by an overview of some of the unique opportunities to address them.\\\\
+    Interactive data exploration has a very unique set of requirements (e.g., response time guarantees), many of which are pushing the boundaries of what is feasible today.
+    \\
+    \subsection{Interactive Latencies:}
+    By far, the most important challenge in supporting interactive data exploration is to display a result within the latency requirement. Even small delays of more than 500 ms can significantly impact the data exploration process and the number of insights a user makes. Therefore, a new system for IDE need to maintain certain response time guarantees in order to provide a fluid user experience. Moreover, we believe that a system should be able to refine the query answer progressively. This allows users to get a more accurate answer while visually inspecting the query results.
+    
+    \subsection{Conversational Queries: }
+    Different from classical OLAP workloads, users want to explore all different facts of a data set instead of browsing a fixed set of reports. This is very different from what existing analytical databases assume since they expect that the workload is known as prior to create the “right” indexes/samples, whereas the goal of data exploration is to explore and visualize the data in new ways. Moreover, indexes and data cubes suffer from the curse of dimensionality, since memory required is exponential with the number of attributes, making it almost impossible to build an index over all attributes or without knowing the data exploration path ahead of time.
+    
+    \subsection{Rare Data Items:}
+    Data exploration often involves examining the tails of a distribution to view the relatively rare data items. For example, real world datasets are rarely perfectly clean and often contain errors (which are typically rare) that can still have a profound effect on the overall results. Similarly, valid outliers and the tails of the distribution are often of particular interest to users when exploring data (e.g., the few billionaires in a dataset, the super users, the top-k customers, the day with the highest traffic). Unfortunately, for rare events and the tail of the distribution, sampling techniques do not work well since they often miss rare items or require a prior knowledge of the workload, a challenge when designing an system for IDE.
+    
+    \subsection{Connect and Explore:}
+    Ideally, the user should be able to connect to a dataset and immediately start exploring it. However, this requirement implies that there is no time for data preparation and the system has to build all internal storage structures such as indexes on the fly. Another implication of the connect and explore paradigm is that the system has to stream over larger datasets (from the sources) and may not be able to hold the entire dataset in memory (or even on disk). As outlined in the introduction, online aggregation methods are a good fit to overcome this challenge, since they provide an immediate estimate (with error bars) over the incoming stream. However, online aggregation techniques assume that the data is random, which might be false since some data sources (e.g., data warehouses) often sort the data on some attribute. This can result in a biased estimate of the result and invalid error bars. Similarly, no good estimates are possible if the source returns the data in some chronological order and if there is some (unknown) correlation between time and the value of interest (e.g., the sales are increasing over time).
+    
+    \subsection{Quantifying Risk:}
+    An interactive data exploration system with a visual interface allows users to explore hundreds of hypotheses in a very short amount of time. Yet, with every hypothesis test (either in the form of an explicit statistical test or through a more informal visualization), the chance of finding something by chance increases. Additionally, the visual interface can make it easier to overlook other challenges, (e.g., “imbalance of labels” for a classifier) which can lead to incorrect conclusions. Therefore, quantifying the risk is extremely important for an interactive data exploration system.
+    
+    \section{OPPORTUNITIES}
+    Although there are several challenges to address, there are many unique opportunities, since data exploration involves close interactions between analysts and the system. Many of these challenges have not yet been explored within the data management community.
+    
+    \subsection{Think Time:}
+    Although the user expects subsecond response times from the system, the system’s expectation from the user is different; there might be several seconds (or sometimes even minutes) between user interactions. During this time, the system not only has the chance to improve the current answers on the screen, but also prepare for any future operations. For instance, in our running example, the user might have already dragged out the sex and salary attribute, but not yet linked them together. Given that both attributes are on the screen, the system might begin creating an index for both attributes. Should the user decide to link the two visualizations and use one as a filter, the index is already created to support this operation.
+    \subsection{Interaction Times:} 
+    Similar to think time, the system can also leverage the user interaction time to provide faster and more accurate answers. For example, it takes several hundred valuable milliseconds to drag an attribute on the interactive whiteboard or to link two visualizations together. In contrast to the previous think time, user interactions are much shorter but usually provide more information to the system about the intent of the user.
+    
+    \subsection{Incremental Query Building:}
+     In contrast to one-shot DBMS queries, data exploration is an iterative, session-driven process where a user repeatedly modifies a workflow after examining the results until finally arriving at some desired insight. For example, think of the session shown in Fig. 1 where the user first filtered salary by gender and then added a filter on education. This session-driven discovery paradigm provides a lot of potential to reuse results between each interaction and modification.
+     
+
+\end{document}
